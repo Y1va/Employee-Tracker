@@ -79,12 +79,29 @@ async function startApp() {
 
 // View all departments function
 async function viewDepartments() {
+  // SQL query that selects all records from the departments table
   const query = 'SELECT * FROM departments';
   try {
     const [rows] = await connection.promise().query(query);
     console.table(rows);
   } catch (err) {
     console.error('An error occured while retrieving departments', err);
+  }
+  // await is used to wait for startApp function to complete before continuing
+  await startApp();
+}
+
+
+// View all roles function
+async function viewRoles() {
+  const query = `
+  SELECT roles.id, roles.title, roles.salary, departments.name AS department FROM roles
+  INNER JOIN departments ON roles.department_id = departments.id`;
+  try {
+    const [rows] = await connecton.promise().query(query);
+    console.table(rows);
+  } catch (err) {
+    console.error('An error occured while retrieving roles', err);
   }
   await startApp();
 }
