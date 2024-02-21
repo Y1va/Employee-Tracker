@@ -36,7 +36,7 @@ async function startApp() {
         ],
       },
     ]);
-
+    // answer.action is compared with the values of case
     switch (answer.action) {
     case 'View all departments':
         await viewDepartments();
@@ -76,3 +76,15 @@ async function startApp() {
   }
 }
 
+
+// View all departments function
+async function viewDepartments() {
+  const query = 'SELECT * FROM departments';
+  try {
+    const [rows] = await connection.promise().query(query);
+    console.table(rows);
+  } catch (err) {
+    console.error('An error occured while retrieving departments', err);
+  }
+  await startApp();
+}
