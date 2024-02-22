@@ -204,3 +204,50 @@ async function addDepartment() {
   }
   await startApp();
  }
+
+
+//  Add employee function
+async function addEmployee() {
+  try {
+    const [roles] = await connection.promise().query('SELECT * FROM roles');
+    const [managers] = await connection.promise().query('SELECT * FROM employees WHERE manager_id IS NULL');
+
+    const choices = [
+      { name: 'None', value: null },
+      ...managers.map((manager) => ({
+        name: `${manager.first_name} ${manager.last_name}`,
+        value: manager.id,
+      })),
+    ];
+
+    const answer = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'firstName',
+        message: "Enter the employees first name:",
+        validate: (input) => {
+          if (input.trim() === '') {
+            return "Please enter the employees first name.";
+          }
+          return true;
+        },
+      },
+      {
+        type: 'input',
+        name: 'lastName',
+        message: "Enter the employees last name:",
+        validate: (input) => {
+          if (input.trim() === '') {
+            return "Please enter the employees last name.";
+          }
+          return true;
+        },
+      },
+      {
+        
+      }
+    ])
+  } catch (err) {
+    
+  }
+}
