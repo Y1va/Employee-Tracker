@@ -133,10 +133,10 @@ async function addDepartment() {
       {
         type: 'input',
         name: 'name',
-        message: 'Enter the name of the department',
+        message: 'Enter the name of the department:',
         validate: (input) => {
           if (input.trim() === '') {
-            return 'Please enter a valid department name';
+            return 'Please enter a valid department name.';
           }
           return true;
         },
@@ -151,3 +151,56 @@ async function addDepartment() {
   }
   await startApp();
 }
+
+
+// Add a role function
+ async function addRole() {
+  try {
+    const [departments] = await connection.promise().query('SELECT * FROM departments');
+    const choices = departments.map((department) => ({
+        name: department.name,
+        value: department.id,
+    }));
+
+    const answer = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'title',
+        message: 'Enter the name of the role:',
+        validate: (input) => {
+          if (input.trim() === '') {
+            return 'Please enter a valid role name.';
+          }
+          return true;
+        },
+      },
+      {
+        type: 'input',
+        name: 'salary',
+        message: 'Enter the salary of the role:',
+        validate: (input) => {
+          if (isNaN(input)) {
+            return 'Please enter a valid salary.'
+          }
+          return true;
+        },
+      },
+      {
+        type: 'list',
+        name: 'departmentId',
+        message: 'Select the department for the role:', choices,
+      },
+    ]);
+
+    const query = 'INSERT INTO roles SET ?';
+    await connection.promise().query(query, {
+      title: answer.title,
+      salary: answer.salary,
+      department_id: answer.departmentId,
+    });
+    console.log('Role has been added sucessfully!');
+  } catch (err) {
+    console.error('An error occured while adding a role');
+  }
+  await startApp();
+ }
