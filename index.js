@@ -124,3 +124,30 @@ async function viewEmployees() {
   }
   await startApp();
 }
+
+
+// Add department function
+async function addDepartment() {
+  try {
+    const answer = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'name',
+        message: 'Enter the name of the department',
+        validate: (input) => {
+          if (input.trim() === '') {
+            return 'Please enter a valid department name';
+          }
+          return true;
+        },
+      },
+    ]);
+
+    const query = 'INSERT INTO departments SET ?';
+    await connection.promise().query(query, { name: answer.name });
+    console.log('Department added successfully!');
+  } catch (err) {
+    console.error('An error occured whilst trying to add a department', err);
+  }
+  await startApp();
+}
