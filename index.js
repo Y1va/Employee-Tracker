@@ -88,6 +88,7 @@ async function viewDepartments() {
     console.error('An error occured while retrieving departments', err);
   }
   // await is used to wait for startApp function to complete before continuing
+  // used to wait for the promise to complete from the async function before continuing
   await startApp();
 }
 
@@ -98,10 +99,28 @@ async function viewRoles() {
   SELECT roles.id, roles.title, roles.salary, departments.name AS department FROM roles
   INNER JOIN departments ON roles.department_id = departments.id`;
   try {
-    const [rows] = await connecton.promise().query(query);
+    const [rows] = await connection.promise().query(query);
     console.table(rows);
   } catch (err) {
     console.error('An error occured while retrieving roles', err);
+  }
+  await startApp();
+}
+
+
+// View all employees function
+async function viewEmployees() {
+  const query = `
+  SELECT employees.id, employees.first_name, employees.last_name, roles.title, departments.name AS department, roles.salary, CONCAT(managers.first_name, ' ', managers.last_name) AS manager FROM employees
+  INNER JOIN roles ON employees.role_id = roles.id
+  INNER JOIN departments ON roles.department_id = departments.id
+  LEFT JOIN employees AS managers ON employees.manager_id = managers.id
+  `;
+  try {
+    const [rows] = await connection.promise().query(query);
+    console.table(rows);
+  } catch (err) {
+    console.error('An error occured whilst retrieving employees', err);
   }
   await startApp();
 }
