@@ -16,7 +16,7 @@ connection.connect(async (err) => {
   await startApp();
 });
 
-// Prompt the user to choose an action
+// Prompt the user to choose an action and starting the app
 async function startApp() {
   try {
     const answer = await inquirer.prompt([
@@ -244,10 +244,31 @@ async function addEmployee() {
         },
       },
       {
-        
-      }
-    ])
+        type: 'list',
+        name: 'roleId',
+        message: "Select the employee's role:",
+        choices: roles.map((role) => ({
+          name: role.title,
+          value: role.id,
+        })),   
+      },
+      {
+        type: 'list',
+        name: 'managerId',
+        message: "Select the employee's manager (optional):",
+        choices,
+      },
+    ]);
+
+    const query = 'INSERT INTO employees SET ?';
+    await connection.promise().query(query, {
+      first_name: answer.firstName,
+      last_name: answer.lastName,
+      role_id: answer.roleId,
+      manager_id: answer.managerId,
+    });
   } catch (err) {
-    
+    console.error('An error occured while adding an employee', err);
   }
+  await startApp();
 }
