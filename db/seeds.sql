@@ -31,12 +31,12 @@ INSERT INTO employees (
     role_id,
     manager_id
 ) VALUES  
-    ('John', 'Doe', 4, 2),
-    ('Mike', 'Chan', 3 NULL),
-    ('Ashley', 'Rodriguez', 6, 5),
-    ('Kevin', 'Tupik', 6, 5),
-    ('Kunal', 'Singh', 5, NULL),
-    ('Malia', 'Brown', 8, NULL),
-    ('Sarah', 'Lourd', 2, NULL);
+    ('Adrian', 'Ponze', 4, 2),
+    ('Jordan', 'Mayhitch', 3, NULL),
+    ('Frank', 'Doolan', 6, 5),
+    ('Emily', 'May', 6, 5),
+    ('Maya', 'Thompson', 5, NULL),
+    ('Rob', 'Devon', 8, NULL),
+    ('Clide', 'Claronet', 2, NULL);
 
 
